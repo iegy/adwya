@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b746d" />
+  <meta name="description" content="أدوية مصر — محرك بحث ذكي للأدوية المصرية بالاسم التجاري والمادة الفعالة والشركة والسعر." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta property="og:title" content="أدوية مصر | ADWYA EGYPT" />
+  <meta property="og:description" content="دليلك الذكي للبحث عن الأدوية في مصر ومقارنة البدائل والأسعار." />
+  <title>أدوية مصر | ADWYA EGYPT</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#searchInput">انتقل للبحث</a>
+
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="أدوية مصر - الرئيسية">
+      <img src="assets/mark.svg" class="brand-mark" width="52" height="52" alt="" />
+      <div class="brand-copy">
+        <strong class="brand-ar">أدوية مصر</strong>
+        <span class="brand-en">ADWYA EGYPT</span>
+      </div>
+    </a>
+    <nav class="header-actions" aria-label="أدوات الموقع">
+      <button class="icon-btn" id="favoritesBtn" type="button" title="المفضلة" aria-label="المفضلة">♡ <span id="favoritesCount">0</span></button>
+      <button class="icon-btn" id="themeBtn" type="button" title="تغيير المظهر" aria-label="تغيير المظهر">◐</button>
+      <button class="lang-btn" id="langBtn" type="button" aria-label="English">EN</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-glow hero-glow-a"></div>
+      <div class="hero-glow hero-glow-b"></div>
+      <div class="hero-inner">
+        <div class="trust-pill"><span class="pulse"></span><span data-i18n="datasetStatus">قاعدة أدوية مصرية محدثة</span></div>
+        <h1 data-i18n="heroTitle">دواؤك… أسرع في البحث، أوضح في المعلومة</h1>
+        <p class="hero-sub" data-i18n="heroSub">ابحث بالاسم العربي أو الإنجليزي، المادة الفعالة، الشركة أو التصنيف الدوائي.</p>
+
+        <div class="search-shell" id="searchShell">
+          <div class="search-row">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input id="searchInput" type="search" autocomplete="off" spellcheck="false" placeholder="اكتب بانادول، Panadol، Paracetamol…" data-i18n-placeholder="searchPlaceholder" aria-label="البحث عن دواء" />
+            <button id="clearSearch" class="clear-btn" type="button" aria-label="مسح البحث" hidden>×</button>
+          </div>
+          <div class="quick-filters" aria-label="تصفية نتائج البحث">
+            <button class="chip active" data-filter="all" type="button" data-i18n="filterAll">الكل</button>
+            <button class="chip" data-filter="name" type="button" data-i18n="filterName">الاسم التجاري</button>
+            <button class="chip" data-filter="ingredient" type="button" data-i18n="filterIngredient">المادة الفعالة</button>
+            <button class="chip" data-filter="company" type="button" data-i18n="filterCompany">الشركة</button>
+            <button class="chip" data-filter="class" type="button" data-i18n="filterClass">التصنيف</button>
+          </div>
+        </div>
+
+        <div class="search-meta" id="searchMeta" aria-live="polite">
+          <span id="dataState" data-i18n="loadingData">جارٍ تجهيز قاعدة الأدوية…</span>
+          <span class="meta-dot">•</span>
+          <span id="resultState" data-i18n="smartSearch">بحث ذكي عربي / English</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-strip" aria-label="إحصائيات قاعدة البيانات">
+      <div class="stat"><strong id="totalDrugs">—</strong><span data-i18n="statDrugs">مستحضر</span></div>
+      <div class="stat"><strong id="totalBrands">—</strong><span data-i18n="statBrands">اسم تجاري</span></div>
+      <div class="stat"><strong id="totalCompanies">—</strong><span data-i18n="statCompanies">شركة</span></div>
+      <div class="stat"><strong>EGP</strong><span data-i18n="statCurrency">أسعار بالجنيه</span></div>
+    </section>
+
+    <section class="content-wrap">
+      <aside class="side-card info-card">
+        <div class="side-icon">✓</div>
+        <h2 data-i18n="whyTitle">معلومة أوضح</h2>
+        <p data-i18n="whyText">نعرض السعر مع مصدر البيانات وتاريخ التحديث، ونفصل بين طريق الاستخدام والجرعة الطبية.</p>
+      </aside>
+
+      <section class="results-panel" aria-labelledby="resultsTitle">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow" data-i18n="resultsEyebrow">محرك البحث</p>
+            <h2 id="resultsTitle" data-i18n="resultsTitle">اكتشف الأدوية</h2>
+          </div>
+          <select id="sortSelect" aria-label="ترتيب النتائج">
+            <option value="relevance" data-i18n="sortRelevant">الأكثر صلة</option>
+            <option value="priceAsc" data-i18n="sortPriceAsc">السعر: الأقل أولًا</option>
+            <option value="priceDesc" data-i18n="sortPriceDesc">السعر: الأعلى أولًا</option>
+            <option value="name" data-i18n="sortName">الاسم</option>
+          </select>
+        </div>
+
+        <div id="emptyState" class="empty-state">
+          <div class="empty-orbit"><img src="assets/mark.svg" alt="" /></div>
+          <h3 data-i18n="emptyTitle">ابدأ بكتابة اسم دواء أو مادة فعالة</h3>
+          <p data-i18n="emptyText">سنبحث في الاسم التجاري، المادة الفعالة، الشركة والتصنيف في نفس اللحظة.</p>
+          <div class="suggestions" id="popularSearches">
+            <button type="button" data-query="Panadol">Panadol</button>
+            <button type="button" data-query="Augmentin">Augmentin</button>
+            <button type="button" data-query="Paracetamol">Paracetamol</button>
+            <button type="button" data-query="Amoxicillin">Amoxicillin</button>
+          </div>
+        </div>
+
+        <div id="loadingCards" class="loading-grid" hidden>
+          <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        </div>
+        <div id="resultsGrid" class="results-grid" aria-live="polite"></div>
+        <button id="loadMoreBtn" class="load-more" type="button" hidden data-i18n="loadMore">عرض المزيد</button>
+      </section>
+
+      <aside class="side-card disclaimer-card">
+        <div class="side-icon">!</div>
+        <h2 data-i18n="medicalTitle">تنبيه طبي</h2>
+        <p data-i18n="medicalText">الموقع مرجع معلوماتي ولا يحدد جرعتك ولا يستبدل الطبيب أو الصيدلي. الأسعار قد تتغير.</p>
+      </aside>
+    </section>
+  </main>
+
+  <div class="compare-dock" id="compareDock" hidden>
+    <div><strong data-i18n="compareTitle">المقارنة</strong><span id="compareCount">0/4</span></div>
+    <div class="compare-items" id="compareItems"></div>
+    <button id="openCompare" class="primary-btn" type="button" data-i18n="compareNow">قارن الآن</button>
+  </div>
+
+  <dialog id="drugDialog" class="modal drug-modal">
+    <button class="modal-close" data-close="drugDialog" type="button" aria-label="إغلاق">×</button>
+    <div id="drugDialogContent"></div>
+  </dialog>
+
+  <dialog id="compareDialog" class="modal compare-modal">
+    <button class="modal-close" data-close="compareDialog" type="button" aria-label="إغلاق">×</button>
+    <div id="compareDialogContent"></div>
+  </dialog>
+
+  <dialog id="favoritesDialog" class="modal favorites-modal">
+    <button class="modal-close" data-close="favoritesDialog" type="button" aria-label="إغلاق">×</button>
+    <div id="favoritesDialogContent"></div>
+  </dialog>
+
+  <footer>
+    <div class="footer-brand"><img src="assets/mark.svg" width="40" height="40" alt="" /><div><strong>أدوية مصر</strong><small>ADWYA EGYPT</small></div></div>
+    <p data-i18n="footerSource">بيانات الأسعار للاسترشاد ويجب التحقق منها وقت الشراء. مصدر البيانات المفتوحة مذكور داخل الموقع.</p>
+    <p class="credit">Designed &amp; Developed by Mohammed Hussein · <a href="https://iegy.net/" target="_blank" rel="noopener">iegy.net</a></p>
+  </footer>
+
+  <noscript>يحتاج موقع أدوية مصر إلى JavaScript لتشغيل البحث الذكي.</noscript>
+  <script src="app.js" defer></script>
+</body>
+</html>
