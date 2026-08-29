@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://iegy.net/adwya/sitemap.xml
+Sitemap: https://adwya.iegy.net/sitemap.xml
