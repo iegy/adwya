@@ -21,6 +21,7 @@ on:
       - 'scripts/**'
       - 'sitemap.xml'
       - 'robots.txt'
+      - 'CNAME'
       - '.github/workflows/validate.yml'
   workflow_dispatch:
 
@@ -49,16 +50,18 @@ jobs:
           from pathlib import Path
           data=json.loads(Path('data/egyptian-drugs.json').read_text(encoding='utf-8'))
           assert len(data)>20000
-          for p in ['assets/logo.png','assets/mark.svg','data/meta.json','data/price-history.json','health.html','health/healthy-diet.html','health/supplements.html']:
+          for p in ['assets/logo.png','assets/mark.svg','data/meta.json','data/price-history.json','health.html','health/healthy-diet.html','health/supplements.html','CNAME']:
               assert Path(p).exists(), p
+          assert Path('CNAME').read_text(encoding='utf-8').strip() == 'adwya.iegy.net'
           health_pages=list(Path('health').glob('*.html'))
           assert len(health_pages)>=15, len(health_pages)
-          assert 'https://iegy.net/adwya/health.html' in Path('sitemap.xml').read_text(encoding='utf-8')
+          assert 'https://adwya.iegy.net/health.html' in Path('sitemap.xml').read_text(encoding='utf-8')
+          assert 'Sitemap: https://adwya.iegy.net/sitemap.xml' in Path('robots.txt').read_text(encoding='utf-8')
           print('Dataset records:',len(data),'Health pages:',len(health_pages))
           PY
       - name: Production SEO build smoke test
         env:
-          SITE_URL: https://iegy.net/adwya
+          SITE_URL: https://adwya.iegy.net
         run: |
           node scripts/build-pages.mjs
           test -f _site/index.html
@@ -67,5 +70,5 @@ jobs:
           test -f _site/health/healthy-diet.html
           test -f _site/sitemap.xml
           test -d _site/drug
-          grep -q 'https://iegy.net/adwya/health.html' _site/sitemap.xml
+          grep -q 'https://adwya.iegy.net/health.html' _site/sitemap.xml
           echo "Generated files: $(find _site -type f | wc -l)"
