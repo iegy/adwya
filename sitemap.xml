@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://iegy.github.io/adwya/</loc></url>
-  <url><loc>https://iegy.github.io/adwya/about.html</loc></url>
-  <url><loc>https://iegy.github.io/adwya/sources.html</loc></url>
-  <url><loc>https://iegy.github.io/adwya/privacy.html</loc></url>
+  <url><loc>https://iegy.net/adwya/</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/about.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/sources.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/privacy.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/healthy-diet.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/fruit-vegetables-fiber.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/salt-blood-pressure.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/free-sugars.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/healthy-fats.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/protein-basics.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/hydration.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/physical-activity.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/sleep.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/food-safety.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/supplements.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/diabetes-prevention.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/heart-health.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/healthy-weight.html</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://iegy.net/adwya/health/vitamins-minerals.html</loc><lastmod>2026-08-29</lastmod></url>
 </urlset>
