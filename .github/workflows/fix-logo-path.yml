@@ -1,0 +1,43 @@
+name: Fix logo path
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-logo-path.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Fix missing logo references
+        run: |
+          test -f assets/logo.png
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          old = s.count('assets/logo.webp')
+          if old == 0:
+              raise SystemExit('No logo.webp references found')
+          s = s.replace('assets/logo.webp', 'assets/logo.png')
+          p.write_text(s, encoding='utf-8')
+          print(f'Replaced {old} logo reference(s)')
+          PY
+          ! grep -q 'assets/logo.webp' index.html
+          grep -q 'assets/logo.png' index.html
+      - name: Remove one-time workflow and commit
+        run: |
+          rm .github/workflows/fix-logo-path.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .github/workflows/fix-logo-path.yml
+          git commit -m 'fix: correct logo asset path'
+          git push origin main
