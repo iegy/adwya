@@ -22,26 +22,69 @@ jobs:
           mkdir -p data
           curl --fail --location --retry 3 \
             'https://raw.githubusercontent.com/karem505/egyptian-drug-database/main/data/egyptian-drugs.json' \
-            -o data/egyptian-drugs.json
-      - name: Validate dataset
+            -o /tmp/egyptian-drugs-new.json
+      - name: Validate, track price changes and build metadata
         run: |
           python - <<'PY'
-          import json
-          p='data/egyptian-drugs.json'
-          with open(p,encoding='utf-8') as f: data=json.load(f)
-          assert isinstance(data,list) and len(data)>20000, 'Dataset validation failed'
+          import json, os, datetime
+          from pathlib import Path
+          new_path=Path('/tmp/egyptian-drugs-new.json')
+          dest=Path('data/egyptian-drugs.json')
+          hist_path=Path('data/price-history.json')
+          meta_path=Path('data/meta.json')
+          new=json.loads(new_path.read_text(encoding='utf-8'))
+          assert isinstance(new,list) and len(new)>20000, 'Dataset validation failed'
           required={'commercial_name_en','commercial_name_ar','scientific_name','manufacturer','drug_class','route','price_egp'}
-          assert required.issubset(data[0]), 'Unexpected schema'
-          print('Validated',len(data),'records')
+          assert required.issubset(new[0]), 'Unexpected schema'
+          old=[]
+          if dest.exists():
+            try: old=json.loads(dest.read_text(encoding='utf-8'))
+            except Exception: old=[]
+          try: hist=json.loads(hist_path.read_text(encoding='utf-8')) if hist_path.exists() else {'changes':{}}
+          except Exception: hist={'changes':{}}
+          hist.setdefault('changes',{})
+          def key(d):
+            return '|'.join(str(d.get(x) or '').strip() for x in ('commercial_name_en','scientific_name','manufacturer'))
+          old_map={key(d):d for d in old}
+          today=datetime.date.today().isoformat()
+          changed=0
+          for d in new:
+            k=key(d); prev=old_map.get(k)
+            if not prev: continue
+            a,b=prev.get('price_egp'),d.get('price_egp')
+            if a!=b:
+              arr=hist['changes'].setdefault(k,[])
+              if not arr: arr.append({'date':today,'price':a})
+              if not arr or arr[-1].get('price')!=b: arr.append({'date':today,'price':b})
+              hist['changes'][k]=arr[-20:]
+              changed+=1
+          hist['generated_at']=today
+          hist['source']='Egyptian Drug Database (CC0)'
+          hist_path.write_text(json.dumps(hist,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+          dest.write_text(json.dumps(new,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+          clean=lambda x:str(x or '').strip().lower()
+          meta={
+            'total':len(new),
+            'brands':len({clean(d.get('commercial_name_en')) for d in new if clean(d.get('commercial_name_en'))}),
+            'companies':len({clean(d.get('manufacturer')) for d in new if clean(d.get('manufacturer'))}),
+            'ingredients':len({clean(d.get('scientific_name')) for d in new if clean(d.get('scientific_name'))}),
+            'routes':len({clean(d.get('route')) for d in new if clean(d.get('route'))}),
+            'synced_at':today,
+            'dataset_last_updated':'June 2026',
+            'source':'https://github.com/karem505/egyptian-drug-database',
+            'price_changes_detected':changed
+          }
+          meta_path.write_text(json.dumps(meta,ensure_ascii=False,indent=2),encoding='utf-8')
+          print('Validated',len(new),'records; price changes:',changed)
           PY
       - name: Commit only when data changed
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/egyptian-drugs.json
+          git add data/egyptian-drugs.json data/price-history.json data/meta.json
           if git diff --cached --quiet; then
             echo 'No dataset changes.'
           else
-            git commit -m 'data: sync Egyptian medicines dataset'
+            git commit -m 'data: sync Egyptian medicines dataset and price history'
             git push
           fi
