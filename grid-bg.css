@@ -1,0 +1,57 @@
+/* ADWYA EGYPT — subtle medical grid background */
+:root{
+  --grid-line:rgba(13,125,116,.055);
+  --grid-line-major:rgba(13,125,116,.024);
+  --grid-glow-a:rgba(39,168,157,.07);
+  --grid-glow-b:rgba(82,198,187,.045);
+}
+body.dark{
+  --grid-line:rgba(82,198,187,.065);
+  --grid-line-major:rgba(82,198,187,.028);
+  --grid-glow-a:rgba(72,189,178,.08);
+  --grid-glow-b:rgba(82,198,187,.045);
+}
+
+html{background:var(--bg)}
+body{
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(circle at 14% 12%,var(--grid-glow-a),transparent 24%),
+    radial-gradient(circle at 88% 20%,var(--grid-glow-b),transparent 21%),
+    linear-gradient(var(--grid-line-major) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-line-major) 1px,transparent 1px),
+    linear-gradient(var(--grid-line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:auto,auto,160px 160px,160px 160px,32px 32px,32px 32px;
+  background-position:0 0,0 0,0 0,0 0,0 0,0 0;
+  background-attachment:fixed;
+}
+
+/* Let the grid remain visible through the hero without reducing readability. */
+.hero{
+  background:linear-gradient(
+    180deg,
+    color-mix(in srgb,var(--surface) 78%,transparent) 0%,
+    color-mix(in srgb,var(--bg) 48%,transparent) 88%
+  )!important;
+}
+
+/* Slight glass treatment for broad content surfaces; cards stay solid and readable. */
+.stats-strip,.browse-section,.safety-section,.health-hero,.health-feature,.health-disclaimer,.health-article>article{
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+
+@media(max-width:768px){
+  body{
+    background-attachment:scroll;
+    background-size:auto,auto,140px 140px,140px 140px,28px 28px,28px 28px;
+  }
+}
+
+@media(prefers-reduced-transparency:reduce){
+  .stats-strip,.browse-section,.safety-section,.health-hero,.health-feature,.health-disclaimer,.health-article>article{
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+  }
+}
