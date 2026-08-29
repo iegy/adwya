@@ -1,7 +1,7 @@
 import fs from 'node:fs';import path from 'node:path';
 const root=process.cwd(),out=path.join(root,'_site'),site=(process.env.SITE_URL||'https://adwya.iegy.net').replace(/\/$/,'');
 fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});
-for(const f of ['index.html','styles.css','theme-v2.css','app.js','search-worker.js','sw.js','manifest.webmanifest','about.html','sources.html','privacy.html','health.html','health.js'])fs.copyFileSync(path.join(root,f),path.join(out,f));
+for(const f of ['index.html','styles.css','theme-v2.css','grid-bg.css','app.js','search-worker.js','sw.js','manifest.webmanifest','about.html','sources.html','privacy.html','health.html','health.js'])fs.copyFileSync(path.join(root,f),path.join(out,f));
 fs.cpSync(path.join(root,'assets'),path.join(out,'assets'),{recursive:true});fs.cpSync(path.join(root,'data'),path.join(out,'data'),{recursive:true});if(fs.existsSync(path.join(root,'health')))fs.cpSync(path.join(root,'health'),path.join(out,'health'),{recursive:true});fs.copyFileSync(path.join(root,'index.html'),path.join(out,'404.html'));
 const data=JSON.parse(fs.readFileSync(path.join(root,'data/egyptian-drugs.json'),'utf8'));
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
