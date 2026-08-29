@@ -1,0 +1,39 @@
+name: Patch health page scripts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'health.js'
+      - '.github/workflows/health-js-patch.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch health script references
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('health.html')
+          s=p.read_text(encoding='utf-8').replace('<script src="app.js"></script>','<script src="health.js"></script>')
+          p.write_text(s,encoding='utf-8')
+          for p in Path('health').glob('*.html'):
+              s=p.read_text(encoding='utf-8').replace('<script src="../app.js"></script>','<script src="../health.js"></script>')
+              p.write_text(s,encoding='utf-8')
+          p=Path('scripts/build-pages.mjs')
+          s=p.read_text(encoding='utf-8').replace("'privacy.html','health.html']","'privacy.html','health.html','health.js']")
+          p.write_text(s,encoding='utf-8')
+          PY
+          git diff --check
+      - name: Commit patch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add health.html health health.js scripts/build-pages.mjs
+          git commit -m 'perf: use lightweight JS on health pages'
+          git push
