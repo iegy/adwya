@@ -1,1 +1,15 @@
-{"name":"أدوية مصر — ADWYA EGYPT","short_name":"أدوية مصر","description":"محرك بحث ذكي للأدوية المصرية بالعربي والإنجليزي.","lang":"ar","dir":"rtl","start_url":"./","scope":"./","display":"standalone","background_color":"#f6faf9","theme_color":"#0b746d","icons":[{"src":"assets/mark.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
+{
+  "name":"أدوية مصر — ADWYA EGYPT",
+  "short_name":"أدوية مصر",
+  "description":"دليلك الذكي للبحث عن الأدوية المصرية والبدائل والأسعار",
+  "lang":"ar",
+  "dir":"rtl",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "background_color":"#f4f9f8",
+  "theme_color":"#0b746d",
+  "icons":[
+    {"src":"assets/mark.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
