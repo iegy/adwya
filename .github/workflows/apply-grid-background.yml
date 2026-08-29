@@ -1,0 +1,32 @@
+name: Apply grid background
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/apply_grid_background.py'
+      - '.github/workflows/apply-grid-background.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply background patch
+        run: python3 scripts/apply_grid_background.py
+      - name: Validate
+        run: |
+          grep -q 'grid-bg.css' index.html
+          grep -q '../grid-bg.css' health/healthy-diet.html
+          grep -q "'grid-bg.css'" scripts/build-pages.mjs
+          git diff --check
+      - name: Commit patch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html about.html sources.html privacy.html health.html health scripts/build-pages.mjs
+          git commit -m 'style: apply subtle grid background sitewide'
+          git push
