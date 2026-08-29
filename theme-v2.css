@@ -1,0 +1,134 @@
+/* ADWYA EGYPT — Visual refresh v2 */
+[hidden]{display:none!important}
+
+:root{
+  --bg:#f6f7f5;
+  --surface:#ffffff;
+  --surface-2:#f1f4f2;
+  --surface-3:#e9efec;
+  --ink:#183532;
+  --muted:#657b77;
+  --brand:#0d7d74;
+  --brand-dark:#086158;
+  --accent:#27a89d;
+  --line:#dce5e1;
+  --warn:#b47a35;
+  --shadow:0 14px 36px rgba(24,53,50,.07);
+  --shadow-strong:0 22px 60px rgba(24,53,50,.11);
+}
+body.dark{
+  --bg:#0e1413;
+  --surface:#161d1b;
+  --surface-2:#1d2825;
+  --surface-3:#24312e;
+  --ink:#e8efed;
+  --muted:#9cafaa;
+  --brand:#52c6bb;
+  --brand-dark:#65d5ca;
+  --accent:#48bdb2;
+  --line:#2b3835;
+  --warn:#d8a05c;
+  --shadow:0 14px 36px rgba(0,0,0,.22);
+  --shadow-strong:0 24px 70px rgba(0,0,0,.34);
+}
+
+body{background:var(--bg);color:var(--ink)}
+.site-header{height:92px;grid-template-columns:245px 1fr auto;padding-block:7px;background:color-mix(in srgb,var(--surface) 92%,transparent);box-shadow:0 1px 0 var(--line)}
+.brand{height:78px;overflow:visible;gap:9px;min-width:0}
+.brand-logo{width:92px;height:76px;object-fit:contain;object-position:center;transform:none!important;flex:0 0 auto}
+.brand-text{display:flex;flex-direction:column;line-height:1.15;white-space:nowrap}
+.brand-text strong{font-size:18px;font-weight:900;color:var(--ink)}
+.brand-text small{margin-top:5px;font-size:10px;font-weight:800;letter-spacing:1.7px;color:var(--brand)}
+.nav-link{font-weight:600}
+.icon-btn,.lang-btn{background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.02)}
+#themeBtn{font-size:0;width:44px;padding:0;display:grid;place-items:center}
+#themeBtn::before{content:'☾';font-size:20px;line-height:1;color:var(--brand-dark)}
+body.dark #themeBtn::before{content:'☀';color:#f5c56a}
+
+.hero{padding:56px 18px 40px;background:linear-gradient(180deg,var(--surface) 0%,var(--bg) 88%)}
+.hero-glow{opacity:.12;filter:blur(42px)}
+h1{font-size:clamp(36px,4.8vw,60px);letter-spacing:-1px;color:var(--ink)}
+.hero-sub{color:var(--muted);margin-bottom:24px}
+.search-shell{border-color:var(--line);border-radius:24px;box-shadow:var(--shadow-strong);padding:8px}
+.search-row{min-height:62px}
+#searchInput{font-size:19px}
+.quick-filters{padding:8px 6px 4px;margin-top:2px}
+.chip{background:var(--surface-2);color:var(--muted);font-weight:600}
+.chip:hover{background:var(--surface-3);color:var(--ink)}
+.chip.active{background:var(--brand-dark);color:#fff}
+body.dark .chip.active{background:var(--brand);color:#071816}
+.search-meta{margin-top:12px}
+
+.stats-strip{margin:-10px auto 24px;border-radius:18px;box-shadow:var(--shadow);border-color:var(--line)}
+.stat{padding:14px 12px}
+.stat strong{color:var(--brand-dark);font-size:22px}
+
+.results-shell{padding-bottom:48px;gap:20px}
+.info-stack{top:112px}
+.side-card,.official-card{border-radius:17px;padding:16px;box-shadow:0 3px 14px rgba(24,53,50,.025)}
+.results-panel{min-height:0}
+.section-head{margin-bottom:14px;align-items:center}
+.section-head h2{font-size:26px}
+.section-head select{background:var(--surface);border-color:var(--line);padding:9px 11px}
+
+.empty-state{min-height:270px;padding:28px 24px;border-radius:20px;background:var(--surface);border:1px dashed color-mix(in srgb,var(--brand) 25%,var(--line));box-shadow:0 4px 18px rgba(24,53,50,.025)}
+.empty-state h3{font-size:19px;margin:12px 0 5px}
+.empty-state p{font-size:14px;line-height:1.75;max-width:560px}
+.empty-orbit{width:64px;height:64px;background:var(--surface-2)}
+.empty-orbit img{width:43px;height:43px}
+.suggestions{margin-top:15px}
+.suggestions button{background:var(--surface);border-color:var(--line);padding:6px 12px}
+.suggestions button:hover{border-color:color-mix(in srgb,var(--brand) 45%,var(--line));color:var(--brand-dark)}
+
+.loading-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0}
+.skeleton{height:190px;background:linear-gradient(90deg,var(--surface),var(--surface-2),var(--surface));border:1px solid var(--line)}
+.results-grid{gap:12px}
+.drug-card{border-radius:18px;padding:16px;background:var(--surface);border:1px solid var(--line);box-shadow:0 3px 12px rgba(24,53,50,.035)}
+.drug-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--brand) 34%,var(--line))}
+.card-top{gap:9px}
+.drug-mini-mark{background:var(--surface-2);color:var(--brand);border:1px solid color-mix(in srgb,var(--brand) 12%,var(--line))}
+.drug-name-en{color:var(--ink);font-size:14px;line-height:1.4}
+.drug-name-ar{color:var(--muted);margin-top:2px}
+.price{font-size:15px;color:var(--brand-dark);background:color-mix(in srgb,var(--brand) 8%,var(--surface));border:1px solid color-mix(in srgb,var(--brand) 16%,var(--line));padding:5px 8px;border-radius:10px}
+.ingredient{min-height:34px;margin:10px 0 9px;font-size:12.5px;color:color-mix(in srgb,var(--ink) 88%,var(--muted))}
+.tag{background:var(--surface-2);color:var(--muted);border:1px solid color-mix(in srgb,var(--line) 80%,transparent)}
+.card-actions{margin-top:12px;grid-template-columns:1fr 42px auto}
+.details-btn{background:var(--brand-dark);color:#fff;box-shadow:none}
+.details-btn:hover{filter:brightness(1.05)}
+.favorite-btn,.compare-check{background:var(--surface)}
+body.dark .details-btn,body.dark .primary-btn,body.dark .action-btn.main{background:var(--brand);color:#071816}
+
+.browse-section,.safety-section{box-shadow:0 5px 20px rgba(24,53,50,.025)}
+.browse-item{background:var(--surface-2)}
+.safety-section{background:linear-gradient(135deg,var(--surface),var(--surface-2))}
+
+.modal{background:var(--surface);border-color:var(--line)}
+.detail-box,.alt-item,.history-chip,.status-badge{background:var(--surface-2)}
+.medical-warning{color:var(--ink)}
+body.dark .modal::backdrop{background:rgba(0,0,0,.72)}
+
+footer{background:var(--surface);border-top-color:var(--line)}
+
+@media(max-width:900px){
+  .site-header{grid-template-columns:1fr auto;height:auto;min-height:80px;padding-block:6px}
+  .brand{height:66px}.brand-logo{width:78px;height:64px}.brand-text strong{font-size:16px}.brand-text small{font-size:9px}
+  .header-links{grid-column:1/-1;order:3;overflow:auto;justify-content:flex-start;padding-bottom:5px}
+  .hero{padding-top:42px}
+  .results-shell{grid-template-columns:1fr}
+  .info-stack{position:static;grid-template-columns:repeat(3,1fr);order:2}
+  .results-panel{order:1}
+}
+@media(max-width:640px){
+  .site-header{grid-template-columns:minmax(0,1fr) auto}
+  .brand-logo{width:68px;height:58px}.brand-text small{display:none}
+  .header-actions{gap:5px}.icon-btn,.lang-btn{height:40px;padding-inline:10px}
+  .hero{padding:34px 12px 30px}.hero-inner{max-width:100%}
+  h1{font-size:34px}.hero-sub{font-size:15px}
+  .search-shell{border-radius:20px}.search-row{grid-template-columns:42px 1fr 38px;min-height:56px}#searchInput{font-size:16px}.search-icon{font-size:28px}
+  .stats-strip{margin:-7px 10px 18px;grid-template-columns:repeat(2,1fr)}.stat:last-child{grid-column:1/-1}
+  .results-shell{padding:0 10px 34px}.section-head{align-items:center}.section-head h2{font-size:22px}.section-head select{max-width:140px;font-size:12px}
+  .empty-state{min-height:230px;padding:22px 16px}
+  .results-grid,.loading-grid{grid-template-columns:1fr}
+  .info-stack{grid-template-columns:1fr}.side-card,.official-card{padding:14px}
+  .drug-card{padding:14px}.card-top{grid-template-columns:34px minmax(0,1fr) auto}.price{font-size:14px}
+}
