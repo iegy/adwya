@@ -1,0 +1,56 @@
+name: Validate ADWYA EGYPT
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'styles.css'
+      - 'app.js'
+      - 'search-worker.js'
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - 'about.html'
+      - 'sources.html'
+      - 'privacy.html'
+      - 'scripts/**'
+      - '.github/workflows/validate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript syntax checks
+        run: |
+          node --check app.js
+          node --check search-worker.js
+          node --check sw.js
+          node --check scripts/build-pages.mjs
+      - name: Validate dataset and required files
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('data/egyptian-drugs.json').read_text(encoding='utf-8'))
+          assert len(data)>20000
+          for p in ['assets/logo.webp','assets/mark.svg','data/meta.json','data/price-history.json']:
+              assert Path(p).exists(), p
+          print('Dataset records:',len(data))
+          PY
+      - name: Production SEO build smoke test
+        env:
+          SITE_URL: https://iegy.github.io/adwya
+        run: |
+          node scripts/build-pages.mjs
+          test -f _site/index.html
+          test -f _site/sitemap.xml
+          test -d _site/drug
+          echo "Generated files: $(find _site -type f | wc -l)"
