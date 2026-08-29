@@ -1,0 +1,32 @@
+name: Price correction / تصحيح سعر
+about: Report a medicine price that appears outdated
+labels: [price-report]
+body:
+  - type: input
+    id: medicine
+    attributes:
+      label: Medicine / الدواء
+    validations:
+      required: true
+  - type: input
+    id: shown
+    attributes:
+      label: Price shown / السعر الظاهر
+  - type: input
+    id: correct
+    attributes:
+      label: Suggested current price / السعر الصحيح المقترح
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence / المصدر
+      description: Pharmacy receipt, official source, or other verifiable evidence. Do not upload personal medical information.
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: I understand reports are reviewed before any dataset change.
+          required: true
