@@ -1,0 +1,35 @@
+name: Migrate ADWYA to subdomain
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/migrate_to_subdomain.py'
+      - '.github/workflows/migrate-subdomain.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply subdomain migration
+        run: python3 scripts/migrate_to_subdomain.py
+      - name: Validate migration
+        run: |
+          test "$(cat CNAME)" = "adwya.iegy.net"
+          grep -q 'https://adwya.iegy.net/' index.html
+          grep -q 'https://adwya.iegy.net/health.html' sitemap.xml
+          grep -q 'Sitemap: https://adwya.iegy.net/sitemap.xml' robots.txt
+          ! grep -R --exclude-dir=.git --exclude-dir=.github --exclude=migrate_to_subdomain.py -n 'https://iegy.net/adwya' .
+          ! grep -R --exclude-dir=.git --exclude-dir=.github --exclude=migrate_to_subdomain.py -n 'https://iegy.github.io/adwya' .
+          git diff --check
+      - name: Commit site migration
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A ':!.github/workflows/**'
+          git commit -m 'feat: move canonical site to adwya.iegy.net'
+          git push
