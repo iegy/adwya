@@ -26,7 +26,7 @@ jobs:
           node-version: '22'
       - name: Generate SEO medicine pages
         env:
-          SITE_URL: https://iegy.net/adwya
+          SITE_URL: https://adwya.iegy.net
         run: node scripts/build-pages.mjs
       - uses: actions/upload-pages-artifact@v3
         with:
