@@ -1,0 +1,33 @@
+name: Emphasize Arabic drug names
+
+on:
+  push:
+    paths:
+      - '.github/workflows/emphasize-arabic-name.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update drug name hierarchy
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('theme-v2.css')
+          s = p.read_text(encoding='utf-8')
+          marker = '/* Drug card name hierarchy — Arabic-first in Arabic UI */'
+          if marker not in s:
+              s += '''\n\n/* Drug card name hierarchy — Arabic-first in Arabic UI */\n.drug-names{min-width:0;display:flex;flex-direction:column;justify-content:center}\nhtml[lang="ar"] .drug-name-ar{order:-1;margin:0 0 2px;color:var(--brand-dark);font-size:18px;font-weight:900;line-height:1.5;letter-spacing:0}\nhtml[lang="ar"] .drug-name-en{color:var(--muted);font-size:12.5px;font-weight:700;line-height:1.35;direction:ltr;text-align:right;opacity:.9}\nhtml[lang="en"] .drug-name-en{color:var(--ink);font-size:15px;font-weight:800;line-height:1.4;direction:ltr;text-align:left}\nhtml[lang="en"] .drug-name-ar{color:var(--brand-dark);font-size:13px;font-weight:700;line-height:1.45;margin-top:2px;text-align:left}\n@media(max-width:640px){html[lang="ar"] .drug-name-ar{font-size:17px}html[lang="ar"] .drug-name-en{font-size:12px}}\n'''
+              p.write_text(s, encoding='utf-8')
+      - name: Commit change and remove one-time workflow
+        run: |
+          rm -f .github/workflows/emphasize-arabic-name.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add theme-v2.css .github/workflows/emphasize-arabic-name.yml
+          git commit -m "style: emphasize Arabic drug names"
+          git push
