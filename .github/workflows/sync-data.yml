@@ -1,0 +1,47 @@
+name: Sync Egyptian medicines dataset
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-data.yml'
+  schedule:
+    - cron: '17 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download latest CC0 dataset
+        run: |
+          mkdir -p data
+          curl --fail --location --retry 3 \
+            'https://raw.githubusercontent.com/karem505/egyptian-drug-database/main/data/egyptian-drugs.json' \
+            -o data/egyptian-drugs.json
+      - name: Validate dataset
+        run: |
+          python - <<'PY'
+          import json
+          p='data/egyptian-drugs.json'
+          with open(p,encoding='utf-8') as f: data=json.load(f)
+          assert isinstance(data,list) and len(data)>20000, 'Dataset validation failed'
+          required={'commercial_name_en','commercial_name_ar','scientific_name','manufacturer','drug_class','route','price_egp'}
+          assert required.issubset(data[0]), 'Unexpected schema'
+          print('Validated',len(data),'records')
+          PY
+      - name: Commit only when data changed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/egyptian-drugs.json
+          if git diff --cached --quiet; then
+            echo 'No dataset changes.'
+          else
+            git commit -m 'data: sync Egyptian medicines dataset'
+            git push
+          fi
