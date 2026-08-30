@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply cache-busting references
+      - name: Apply mobile search fixes
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -30,8 +30,14 @@ jobs:
           s=p.read_text(encoding='utf-8')
           s=s.replace("search-worker.js?v=7", "search-worker.js?v=9")
           s=s.replace("sw.js?v=7", "sw.js?v=9")
+          s=s.replace("},12000)", "},45000)")
           p.write_text(s, encoding='utf-8')
           PY
+      - name: JavaScript syntax checks
+        run: |
+          node --check app.js
+          node --check search-worker.js
+          node --check sw.js
       - name: Commit hotfix
         run: |
           git config user.name 'github-actions[bot]'
@@ -40,6 +46,6 @@ jobs:
           if git diff --cached --quiet; then
             echo 'No hotfix changes needed.'
           else
-            git commit -m 'fix: force fresh mobile search engine assets'
+            git commit -m 'fix: allow medicine database to initialize on slower phones'
             git push
           fi
