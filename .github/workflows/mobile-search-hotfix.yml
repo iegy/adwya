@@ -1,0 +1,45 @@
+name: Apply mobile search hotfix
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/mobile-search-hotfix.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply cache-busting references
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('src="site-shell.js"', 'src="site-shell.js?v=9"')
+          s=s.replace('src="app.js"', 'src="app.js?v=9"')
+          p.write_text(s, encoding='utf-8')
+
+          p=Path('app.js')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace("search-worker.js?v=7", "search-worker.js?v=9")
+          s=s.replace("sw.js?v=7", "sw.js?v=9")
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit hotfix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html app.js
+          if git diff --cached --quiet; then
+            echo 'No hotfix changes needed.'
+          else
+            git commit -m 'fix: force fresh mobile search engine assets'
+            git push
+          fi
