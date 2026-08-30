@@ -1,0 +1,47 @@
+name: Apply isolated UI shell
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/apply-isolated-ui-shell.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch UI-only integration
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '<script src="app.js" defer></script>'
+          if 'src="ui-shell.js"' not in s:
+              s = s.replace(marker, marker + '\n  <script src="ui-shell.js" defer></script>')
+          p.write_text(s, encoding='utf-8')
+
+          b = Path('scripts/build-pages.mjs')
+          s = b.read_text(encoding='utf-8')
+          s = s.replace("'health.html','health.js']", "'health.html','health.js','ui-shell.js']")
+          s = s.replace('</main></body></html>', '</main><script src="../../ui-shell.js"></script></body></html>')
+          b.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Confirm search engine files untouched
+        run: |
+          git diff -- app.js search-worker.js sw.js
+          test -z "$(git diff --name-only -- app.js search-worker.js sw.js)"
+
+      - name: Commit UI-only patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html scripts/build-pages.mjs
+          git diff --cached --quiet || git commit -m "feat: add isolated hamburger shell after search app"
+          git push
