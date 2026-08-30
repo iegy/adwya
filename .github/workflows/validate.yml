@@ -7,7 +7,10 @@ on:
       - 'index.html'
       - 'styles.css'
       - 'theme-v2.css'
+      - 'medical-info.css'
       - 'app.js'
+      - 'ui-shell.js'
+      - 'medical-info.js'
       - 'health.js'
       - 'search-worker.js'
       - 'sw.js'
@@ -39,6 +42,8 @@ jobs:
       - name: JavaScript syntax checks
         run: |
           node --check app.js
+          node --check ui-shell.js
+          node --check medical-info.js
           node --check health.js
           node --check search-worker.js
           node --check sw.js
@@ -50,7 +55,7 @@ jobs:
           from pathlib import Path
           data=json.loads(Path('data/egyptian-drugs.json').read_text(encoding='utf-8'))
           assert len(data)>20000
-          for p in ['assets/logo.png','assets/mark.svg','data/meta.json','data/price-history.json','health.html','health/healthy-diet.html','health/supplements.html','CNAME']:
+          for p in ['assets/logo.png','assets/mark.svg','data/meta.json','data/price-history.json','health.html','health/healthy-diet.html','health/supplements.html','medical-info.js','medical-info.css','ui-shell.js','CNAME']:
               assert Path(p).exists(), p
           assert Path('CNAME').read_text(encoding='utf-8').strip() == 'adwya.iegy.net'
           health_pages=list(Path('health').glob('*.html'))
